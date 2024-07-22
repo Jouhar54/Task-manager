@@ -1,0 +1,34 @@
+.todo-list{
+    list-style: none;
+    padding: 0%;
+    min-width: 20rem;
+    li{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px;
+        border-bottom: 1px solid #ccc;
+
+        &.completed span {
+            text-decoration: line-through;
+        }
+
+        span {
+            flex-grow: 1;
+            cursor: pointer;
+        }
+
+        button {
+            border: none;
+            background-color: #dc3545;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+
+            &:hover{
+                background-color: #c82333;
+            }
+        }
+    }
+}
