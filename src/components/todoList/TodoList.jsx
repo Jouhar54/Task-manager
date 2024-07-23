@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { toggleTodo, deleteTodo, editTodo } from '../../app/todosSlice';
+import { toggleTodo, deleteTodo } from '../../app/todosSlice';
 import axios from 'axios';
 import './TodoList.scss';
 
@@ -8,49 +8,59 @@ const url_api = "http://localhost:3003/api/todo";
 
 const TodoList = () => {
   const [todoItems, setTodoItems] = useState([]);
+  const [editingId, setEditingId] = useState('');
+  const [newText, setNewText] = useState('');
 
-  const fetchTodo = async ()=>{
-    try{
+  const fetchTodo = async () => {
+    try {
       const response = await axios(url_api)
       setTodoItems(response.data);
       console.log(response.data);
-    }catch (err){
+    } catch (err) {
       console.log(err);
     }
   }
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchTodo()
-  },[]);
+  }, []);
 
-    const dispatch = useDispatch();
-    const [editingId, setEditingId] = useState(null);
-    const [newText, setNewText] = useState('');
+  const dispatch = useDispatch();
 
   const putTodo = async () => {
     try {
-      await axios(url_api, {
+      const response = await axios(url_api, {
         method: "PUT",
-        data:{
-          id : editingId,
+        data: {
+          id: editingId,
           todo: newText,
-          isCompleted : false
+          isCompleted: false
         }
       })
+      setTodoItems(response.data);
     } catch (error) {
       console.log(error.response.data);
     }
   };
 
-  const newTodo = (id, text) => {
-    setEditingId(id);
-    setNewText(text)
-    e.preventDefault();
-    dispatch(editTodo({ id: editingId, text: newText }));
-    setEditingId(null);
-    setNewText('');
-  };
+  const deleteTodo = async (id) =>{
+    try {
+      const response = await axios(url_api, {
+        method: "DELETE",
+        data:{
+          id: id
+        }
+      });
+      setTodoItems(response.data);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
+  const handleEdit = (id) => {
+    setEditingId(id);
+  };
+  
   return (
     <ul className="todo-list">
       {todoItems.map((todo) => (
@@ -66,13 +76,14 @@ const TodoList = () => {
               <button type="submit">Save</button>
               <button type="button" onClick={() => setEditingId(null)}>Cancel</button>
             </form>
-          ) :(<>
-            <span onClick={() => dispatch(toggleTodo(todo.id))}>{todo.todo}</span>
-          <button onClick={() => dispatch(deleteTodo(todo.id))}>Delete</button>
-          <button onClick={ ()=>putTodo(todo.id) }>Edit</button>
-          </>
+          ) : (
+            <>
+              <span onClick={() => dispatch(toggleTodo(todo.id))}>{todo.todo}</span>
+              <button onClick={() => deleteTodo(todo.id)}>Delete</button>
+              <button onClick={() => handleEdit(todo.id)}>Edit</button>
+            </>
           )}
-          
+
         </li>
       ))}
     </ul>

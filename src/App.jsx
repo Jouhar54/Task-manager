@@ -8,7 +8,7 @@ function App() {
     <>
       <div className='app'>
         <div className='outerDiv'>
-          <h1>Todo App</h1>
+          <h1>Task Manager</h1>
           <TodoInput />
           <TodoList />
         </div>
