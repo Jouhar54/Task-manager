@@ -13,8 +13,8 @@
             text-decoration: line-through;
         }
 
-        span {
-            flex-grow: 1;
+        p {
+            flex-grow: 2;
             cursor: pointer;
         }
 
@@ -25,10 +25,38 @@
             padding: 5px 10px;
             border-radius: 5px;
             cursor: pointer;
+            margin-left: 2px;
 
             &:hover{
                 background-color: #c82333;
             }
         }
     }
+}
+.todo-input {
+    display: flex;
+    margin-bottom: 20px;
+    input {
+        padding: 10px;
+        font-size: 1rem;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-right: 10px;
+        flex-grow: 1;
+    }
+
+    button {
+        padding: 10px 15px;
+        font-size: 1rem;
+        border: none;
+        background-color: #28a745;
+        color: white;
+        border-radius: 5px;
+        cursor: pointer;
+        
+        &:hover {
+            background-color: #218838;
+    }
+    }
+
 }

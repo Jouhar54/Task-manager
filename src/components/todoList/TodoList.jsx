@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { toggleTodo, deleteTodo } from '../../app/todosSlice';
 import axios from 'axios';
 import './TodoList.scss';
 
@@ -10,6 +8,7 @@ const TodoList = () => {
   const [todoItems, setTodoItems] = useState([]);
   const [editingId, setEditingId] = useState('');
   const [newText, setNewText] = useState('');
+  const [input, setInput] = useState('');
 
   const fetchTodo = async () => {
     try {
@@ -25,7 +24,20 @@ const TodoList = () => {
     fetchTodo()
   }, []);
 
-  const dispatch = useDispatch();
+  const postTodo = async () =>{
+    try {
+      const response = await axios(url_api, {
+        method: "POST",
+        data:{
+          todo: input
+        }
+      });
+      setTodoItems(response.data);
+      
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const putTodo = async () => {
     try {
@@ -62,6 +74,16 @@ const TodoList = () => {
   };
   
   return (
+    <>
+    <form onSubmit={postTodo} className="todo-input">
+      <input
+        type="text"
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Add a new todo"
+      />
+      <button type="submit">Add</button>
+    </form>
     <ul className="todo-list">
       {todoItems.map((todo) => (
         <li key={todo.id} className={todo.completed ? 'completed' : ''}>
@@ -78,7 +100,7 @@ const TodoList = () => {
             </form>
           ) : (
             <>
-              <span onClick={() => dispatch(toggleTodo(todo.id))}>{todo.todo}</span>
+              <p>{todo.todo}</p>
               <button onClick={() => deleteTodo(todo.id)}>Delete</button>
               <button onClick={() => handleEdit(todo.id)}>Edit</button>
             </>
@@ -87,6 +109,7 @@ const TodoList = () => {
         </li>
       ))}
     </ul>
+    </>
   )
 }
 

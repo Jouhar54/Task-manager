@@ -1,6 +1,6 @@
-import './App.scss'
-import TodoInput from './components/todoInput/TodoInput'
+// import TodoInput from './components/todoInput/TodoInput'
 import TodoList from './components/todoList/TodoList'
+import './App.scss'
 
 function App() {
 
@@ -9,7 +9,7 @@ function App() {
       <div className='app'>
         <div className='outerDiv'>
           <h1>Task Manager</h1>
-          <TodoInput />
+          {/* <TodoInput /> */}
           <TodoList />
         </div>
       </div>
